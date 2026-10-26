@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watchful Eye</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="lobby">
+<header>
+  <ul class="chart" aria-label="Watchful Eye">
+    <li class="row-1"><span class="optotype">Watchful</span><span class="acuity">1</span></li>
+    <li class="row-2"><span class="optotype">Eye</span><span class="acuity">2</span></li>
+    <li class="row-3"><span class="optotype">a card game of hidden hands</span><span class="acuity">3</span></li>
+    <li class="row-4"><span>Survive the house. Keep your deals, or don't. Hold the most Jury Votes when two remain.</span><span class="acuity">4</span></li>
+  </ul>
+  <div class="you">
+    <label class="field"><span>Your name at the table</span><input id="name" type="text" maxlength="16" placeholder="letters, digits, - or _" autocomplete="off"></label>
+    <span id="name-note" class="notice"></span>
+  </div>
+</header>
+
+<div class="lobby-grid">
+  <section>
+    <h2>Join a queue</h2>
+    <div class="queue" id="queues">
+      {% for r in rulesets %}
+      <div class="row" data-ruleset="{{ r.key }}">
+        <span class="name">{{ r.label }}</span>
+        <span class="blurb">{{ r.blurb }}</span>
+        <span class="count"><span class="n">0</span> of {{ r.cast }} waiting</span>
+        <button class="btn join" data-ruleset="{{ r.key }}">Join</button>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="notice" id="queue-note"></p>
+  </section>
+
+  <section>
+    <h2>Start a custom game</h2>
+    <form class="custom" id="custom">
+      <div class="two">
+        <label class="field"><span>Cast size ({{ min_cast }}–{{ max_cast }})</span><input name="cast" type="number" min="{{ min_cast }}" max="{{ max_cast }}" value="{{ default_cast }}"></label>
+        <label class="field"><span>Deck size</span><input name="deck_size" type="number" min="100" max="3000" step="50" value="600"></label>
+      </div>
+      <div class="two">
+        <label class="field"><span>Seconds per move</span><input name="move_wait_s" type="number" min="5" max="600" value="30"></label>
+        <label class="field"><span>Move order</span>
+          <select name="move_order">
+            <option value="random">Random</option>
+            <option value="seating">Seating order</option>
+            <option value="none">None — Chaos</option>
+          </select>
+        </label>
+      </div>
+      <div class="two">
+        <label class="check"><input name="public_chat" type="checkbox"> Public chat</label>
+        <label class="field" id="chaos-field" hidden><span>Minutes per Open phase</span><input name="chaos_minutes" type="number" min="0.5" max="60" step="0.5" value="5"></label>
+      </div>
+      <div><button class="btn iris" type="submit">Create room</button> <span class="sub" style="color:var(--slate);font-size:14px">You'll get a link to send to the others.</span></div>
+      <p class="notice" id="custom-note"></p>
+    </form>
+  </section>
+</div>
+
+<footer>The game starts automatically when a queue fills. Custom rooms start when the creator says so (at least {{ min_cast }} players).</footer>
+<script type="module" src="/static/lobby.js"></script>
+</body>
+</html>

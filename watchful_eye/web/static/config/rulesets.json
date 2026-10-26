@@ -1,0 +1,63 @@
+{
+  "cast": { "default": 10, "min": 3, "max": 16 },
+
+  "rules": {
+    "open_turns": 5,
+    "tea_max_words": 3,
+    "manifesto_max_words": null,
+    "repeat_watcher_allowed_at_players": 4,
+    "deal_enforcement": "expose",
+    "reveal_votes": "count",
+    "eliminated_distribution": true,
+    "starting_hand": 5,
+    "starting_jury_votes": 1,
+    "reshuffle_discards": true
+  },
+
+  "deck": {
+    "Train": 73,
+    "Declare": 73,
+    "Mist": 37,
+    "Shuffle": 49,
+    "Exchange": 37,
+    "Wild": 37,
+    "Tea": 122,
+    "Manifesto": 24,
+    "Chit-Chat": 366,
+    "Throw": 49,
+    "Jury Vote": 0,
+    "Safety": { "1": 24, "2": 24, "3": 24 },
+    "Pledge": { "nominate": 37, "vote": 24 }
+  },
+
+  "options": {
+    "deck_size":     { "default": 600, "min": 100, "max": 3000 },
+    "move_wait_s":   { "default": 30,  "min": 5,   "max": 600 },
+    "chaos_minutes": { "default": 5,   "min": 0.5, "max": 60 },
+    "public_chat":   { "default": false },
+    "move_order":    { "default": "random", "choices": ["random", "seating", "none"] }
+  },
+
+  "presets": {
+    "silent": {
+      "label": "Silent",
+      "blurb": "No chat. Thirty seconds a move. Cards are the only way to talk.",
+      "move_wait_s": 30, "public_chat": false, "move_order": "random"
+    },
+    "chat": {
+      "label": "Chat",
+      "blurb": "A public room everyone can speak in. Thirty seconds a move.",
+      "move_wait_s": 30, "public_chat": true, "move_order": "random"
+    },
+    "speed": {
+      "label": "Speed",
+      "blurb": "No chat. Ten seconds a move.",
+      "move_wait_s": 10, "public_chat": false, "move_order": "random"
+    },
+    "chaos": {
+      "label": "Chaos",
+      "blurb": "No move order. Everyone gets five actions and five minutes per Open phase, all at once.",
+      "move_wait_s": 30, "public_chat": false, "move_order": "none", "chaos_minutes": 5
+    }
+  }
+}

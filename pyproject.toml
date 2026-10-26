@@ -1,0 +1,22 @@
+[project]
+name = "watchful-eye"
+version = "0.1.0"
+description = "Rules engine and LLM harness for beta-testing the board game Watchful Eye"
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2", "pyyaml", "openrouter"]
+
+[project.optional-dependencies]
+web = ["fastapi", "uvicorn", "jinja2", "websockets"]
+
+[project.scripts]
+watchful-eye = "watchful_eye.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.setuptools.packages.find]
+include = ["watchful_eye*"]
+
+[tool.setuptools.package-data]
+watchful_eye = ["web/templates/*.html", "web/static/*", "web/static/fonts/*"]

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watchful Eye — {{ label }} room {{ room_id }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="game no-chat" id="game" data-room="{{ room_id }}">
+  <header class="topbar">
+    <span class="title">Watchful Eye</span>
+    <span class="phase" id="phase">Waiting for players</span>
+    <span class="clock" id="clock"></span>
+    <button class="btn quiet small" id="rules-btn">Rules</button>
+  </header>
+
+  <aside class="house" id="house">
+    <section>
+      <h3 class="panel-title">The house</h3>
+      <div id="seats"></div>
+    </section>
+    <section>
+      <h3 class="panel-title">Spinner slots</h3>
+      <div class="slots" id="slots"></div>
+    </section>
+    <section id="deals-section" hidden>
+      <h3 class="panel-title">Deals</h3>
+      <div id="deals"></div>
+    </section>
+    <section id="declares-section" hidden>
+      <h3 class="panel-title">Public declares</h3>
+      <div id="declares"></div>
+    </section>
+  </aside>
+
+  <main class="feed" id="feed"></main>
+
+  <section class="waiting" id="waiting" hidden>
+    <h2 class="display" style="margin:0 0 6px;font-size:26px">Room <span id="w-room"></span></h2>
+    <p id="w-label" style="color:var(--slate);margin:0 0 18px"></p>
+    <p>Send this link to the others:</p>
+    <span class="link" id="w-link"></span>
+    <div class="players" id="w-players"></div>
+    <p id="w-status"></p>
+    <button class="btn iris" id="w-start" hidden>Start now</button>
+  </section>
+
+  <aside class="chat" id="chat">
+    <div>
+      <h3 class="panel-title" id="chat-title">Chat</h3>
+      <div class="hint" id="chat-hint"></div>
+    </div>
+    <div class="log" id="chat-log"></div>
+    <form id="chat-form"><input type="text" id="chat-input" maxlength="500" placeholder="Say something" autocomplete="off"><button class="btn small">Send</button></form>
+  </aside>
+
+  <footer class="hand" id="hand">
+    <div class="prompt" id="prompt"></div>
+    <div class="cards" id="cards"></div>
+  </footer>
+</div>
+
+<aside class="drawer" id="rules" aria-hidden="true">
+  <button class="btn quiet small close" id="rules-close">Close</button>
+  <div id="rules-body"><p>The rules appear once the game begins.</p></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/static/game.js"></script>
+</body>
+</html>

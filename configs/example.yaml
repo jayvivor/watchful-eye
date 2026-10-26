@@ -1,0 +1,124 @@
+# Watchful Eye — simulator config
+# Every field below is optional except `players`; defaults are shown.
+
+name: watchful-eye-demo
+# seed: 42            # omit for a random seed; the seed is recorded in result.json
+
+# ---------------------------------------------------------------- players
+# agent: llm | random.  model: an OpenRouter id, or a full model block, or omit for llm.default_model.
+players:
+  # - name: Fable
+  #   agent: llm
+  #   model: ~anthropic/claude-fable-latest
+  - name: Sonnet
+    agent: llm
+    model: ~anthropic/claude-sonnet-latest
+  - name: Opus
+    agent: llm
+    model: ~anthropic/claude-opus-latest
+  - name: Astra
+    agent: llm
+    model: ~openai/gpt-astra-latest
+  - name: Luna
+    agent: llm
+    model: ~openai/gpt-luna-latest
+  # - name: Terra
+  #   agent: llm
+  #   model: ~openai/gpt-terra-latest
+  # - name: Sol
+  #   agent: llm
+  #   model: ~openai/gpt-sol-latest
+  - name: Kimi
+    agent: llm
+    model: moonshotai/kimi-k3.1-pro
+  - name: Argon
+    agent: llm
+    model: google/gemini-4-argon
+  # - name: GeminiFlash
+  #   agent: llm
+  #   model: ~google/gemini-flash-latest
+  - name: GLM
+    agent: llm
+    model: ~z-ai/glm-latest
+  - name: DeepSeek
+    agent: llm
+    model: ~deepseek/deepseek-pro-latest
+  - name: Gemma
+    agent: llm
+    model: google/gemma-4-31b-it
+  - name: Inkling
+    agent: llm
+    model: thinkingmachines/inkling
+  - name: Minimax
+    agent: llm
+    model: minimax/minimax-m3
+  - name: Grok
+    agent: llm
+    model: ~x-ai/grok-latest
+  # - name: Muse
+  #   agent: llm
+  #   model: meta/muse-wonder
+
+# -------------------------------------------------------------------- llm
+llm:
+  api_key_env: OPENROUTER_API_KEY   # or set api_key: "sk-or-..." (not recommended)
+  # default_model:
+  #   model: openai/gpt-4o-mini
+  #   temperature: 0.8
+  #   max_tokens: 2000
+  #   # reasoning: { effort: medium }           # OpenRouter unified reasoning config
+  #   # provider: { allow_fallbacks: true }     # OpenRouter provider routing
+  #   # extra: { top_p: 0.95 }                  # anything else chat.send() accepts
+  response_format: json_schema      # json_schema | json_object | none (auto-falls back if a provider rejects it)
+  strict_json: false
+  max_retries: 2                    # re-prompts with the validation error before giving up
+  fallback_to_random: true          # after retries fail, make a random legal move (logged as a fallback)
+  cache_control: true               # OpenRouter top-level cache_control (Anthropic needs it; others cache automatically)
+  max_history_messages: null        # players keep their whole conversation; set a number to trim
+  log_raw_responses: true           # runs/<game>/llm_calls.jsonl
+  log_prompts: false                # include full prompts in that log (big)
+
+# ------------------------------------------------------------------- deck
+deck:
+  # With `size` unset these are exact counts. Set `size: 80` and they become relative weights
+  # (rarity) that are scaled to an 80-card deck.
+  size: 1000
+  cards:
+    Train: 6
+    Declare: 6
+    Mist: 3
+    Shuffle: 4
+    Exchange: 3
+    Wild: 3
+    Tea: 10
+    Manifesto: 2        # "much rarer than Tea"
+    Chit-Chat: 30
+    Throw: 4
+    # Jury Vote:        # must cover players x starting_jury_votes when jury_votes_in_deck is true
+    Safety: { 1: 2, 2: 2, 3: 2 }        # printed round counts -> how many of each
+    Pledge: { nominate: 3, vote: 2 }    # printed category -> how many of each
+  starting_hand: 5
+  starting_jury_votes: 1
+  jury_votes_in_deck: false
+  reshuffle_discards: true
+
+# ------------------------------------------------------------------ rules
+rules:
+  open_turns: 5
+  turn_scope: each_player           # each_player: 5 actions each per Open phase | total: 5 actions per phase
+  tea_max_words: 3
+  manifesto_max_words: 500
+  repeat_watcher_allowed_at_players: 4   # no back-to-back Watcher while MORE than this many remain
+  deal_enforcement: expose          # expose (rules-as-written, deals AND declares) | auto (host penalises instantly; debugging)
+  reveal_votes: count               # count | full | none
+  eliminated_distribution: true
+  history_events: 80                # events shown on a player's very first message (afterwards they get everything, incrementally)
+  max_rounds: 60
+
+# ----------------------------------------------------------------- output
+output:
+  dir: runs
+  transcript: true
+  events: true
+  verbose: true
+  print_llm_thinking: false
